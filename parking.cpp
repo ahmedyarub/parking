@@ -41,7 +41,7 @@ int main(int argc, const char** argv)
 	Mat img, frame, foregroundMask, backgroundImage, foregroundImg;
 
 	// capture video from source 0, which is web camera, If you want capture video from file just replace //by  VideoCapture cap("videoFile.mov")
-	VideoCapture cap("c:\\parking4.mp4");
+	VideoCapture cap("parking4.mp4");
 	//VideoCapture cap(0);
 
 	// main loop to grab sequence of input files
