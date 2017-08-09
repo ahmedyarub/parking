@@ -12,7 +12,6 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
-#include <Windows.h>
 #include <ctime>
 
 using namespace cv;
@@ -26,7 +25,7 @@ void ocr(Mat frame);
 
 int main(int argc, const char** argv)
 {
-	boolean car_fined = false;
+	bool car_fined = false;
 
 	time_t parked_at;
 	time(&parked_at);
