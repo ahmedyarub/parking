@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.2)
+project( parking )
+find_package( OpenCV REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( parking parking.cpp )
+target_link_libraries( parking ${OpenCV_LIBS})
+target_compile_features(parking PRIVATE cxx_range_for)
