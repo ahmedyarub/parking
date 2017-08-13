@@ -32,7 +32,7 @@ int main(int argc, const char** argv)
 
 	namedWindow("frame", 1);
 	parking_time = 5;
-	createTrackbar("Parking time", "frame", &parking_time, 20, NULL);
+	createTrackbar("Parking time", "frame", &parking_time, 60, NULL);
 
 	// Init background substractor
 	Ptr<BackgroundSubtractor> bg_model = createBackgroundSubtractorMOG2().dynamicCast<BackgroundSubtractor>();
@@ -41,14 +41,30 @@ int main(int argc, const char** argv)
 	Mat img, frame, foregroundMask, backgroundImage, foregroundImg;
 
 	// capture video from source 0, which is web camera, If you want capture video from file just replace //by  VideoCapture cap("videoFile.mov")
-	VideoCapture cap("parking4.mp4");
-	//VideoCapture cap(0);
+	//VideoCapture cap("parking4.mp4");
+	VideoCapture cap(0);
 
 	// main loop to grab sequence of input files
 	for (;;) {
-		cap.grab();
-		cap.grab();
+
+		if(cap.grab())
+{
+cap.retrieve(frame, CV_CAP_OPENNI_BGR_IMAGE);
+imshow("frame", frame);
+}
+
+                if(cap.grab())
+{
+cap.retrieve(frame, CV_CAP_OPENNI_BGR_IMAGE);
+imshow("frame", frame);
+}
+
 		bool ok = cap.grab();
+if(ok)
+{
+cap.retrieve(frame, CV_CAP_OPENNI_BGR_IMAGE);
+imshow("frame", frame);
+}
 
 		if (ok == false) {
 			std::cout << "Video Capture Fail" << std::endl;
@@ -68,7 +84,7 @@ int main(int argc, const char** argv)
 			// compute foreground mask 8 bit image
 			// -1 is parameter that chose automatically your learning rate
 
-			bg_model->apply(img, foregroundMask, false ? -1 : 0);
+			bg_model->apply(img, foregroundMask, true ? -1 : 0);
 
 			// smooth the mask to reduce noise in image
 			GaussianBlur(foregroundMask, foregroundMask, Size(11, 11), 3.5, 3.5);
@@ -89,7 +105,18 @@ int main(int argc, const char** argv)
 
 			float mask_percent = count_white / (foregroundMask.rows * foregroundMask.cols);
 
-			system("CLS");
+			#ifdef WINDOWS
+
+    std::system("cls");
+
+#else
+
+    // Assume POSIX
+
+    //std::system ("clear");
+
+#endif
+
 			if (mask_percent < 0.75)
 			{
 				car_fined = false;
@@ -112,7 +139,7 @@ int main(int argc, const char** argv)
 					{
 						car_fined = true;
 
-						imshow("Fined car", foregroundImg);
+						imshow("Fined car", frame);
 						//ocr(foregroundImg);
 					}
 
@@ -130,8 +157,8 @@ int main(int argc, const char** argv)
 
 			// Show the results
 			//imshow("foreground mask", foregroundMask);
-			imshow("frame", frame);
-			//imshow("foreground image", foregroundImg);
+			//imshow("frame", frame);
+			imshow("foreground image", foregroundImg);
 
 			//int key6 = waitKey(40);
 
