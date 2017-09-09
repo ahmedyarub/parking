@@ -30,7 +30,7 @@ string get_date_time() {
 	char buffer[80];
 
 	time(&rawtime);
-	localtime_s(timeinfo, &rawtime);
+	timeinfo = localtime(&rawtime);
 
 	strftime(buffer, 80, "%G%m%d%I%M%S", timeinfo);
 
@@ -43,7 +43,7 @@ string get_time() {
 	char buffer[80];
 
 	time(&rawtime);
-	localtime_s(timeinfo, &rawtime);
+	timeinfo = localtime(&rawtime);
 
 	strftime(buffer, 80, "%I:%M:%S", timeinfo);
 
@@ -120,7 +120,7 @@ int main(int argc, const char** argv)
 			// compute foreground mask 8 bit image
 			// -1 is parameter that chose automatically your learning rate
 
-			bg_model->apply(img, foregroundMask, false ? -1 : 0);
+			bg_model->apply(img, foregroundMask, true ? -1 : 0);
 
 			// smooth the mask to reduce noise in image
 			GaussianBlur(foregroundMask, foregroundMask, Size(11, 11), 3.5, 3.5);
@@ -147,7 +147,7 @@ int main(int argc, const char** argv)
 			//std::system ("clear");
 #endif
 
-			if (mask_percent < 0.75)
+			if (mask_percent < 0.30)
 			{
 				if (car_fined)
 				{
@@ -159,12 +159,12 @@ int main(int argc, const char** argv)
 
 				time(&parked_at);
 				parked_from = get_time();
-				cout << "No car parked";
+				cout << "No car parked" << std::endl;
 			}
 			else {
 				if (car_fined)
 				{
-					cout << "Car fined!";
+					cout << "Car fined!" << std::endl;
 				}
 				else {
 					time_t cur_time;
@@ -182,7 +182,7 @@ int main(int argc, const char** argv)
 						imwrite(img_file, frame);
 					}
 
-					cout << "Car parked for: " << parked_for << " seconds";
+					cout << "Car parked for: " << parked_for << " seconds" << std::endl;
 				}
 			}
 
